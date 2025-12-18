@@ -796,7 +796,21 @@ async def txt_handler(bot: Client, m: Message):
            
             elif 'videos.classplusapp' in url:
                 url = requests.get(f'https://api.classplusapp.com/cams/uploader/video/jw-signed-url?url={url}', headers={'x-access-token': f'{cptoken}'}).json()['url']
-            
+            if 'liveSessionId' in url or 'contentId' in url:
+    url = url.replace("//", "").replace("https", "").replace("http", "").replace(":", "")
+    print(url)
+
+    headers = {
+        'x-access-token': f'{YOUR_PURCHASED_TOKEN}'
+    }
+
+    response = requests.get(
+        f'https://api.classplusapp.com/cams/uploader/video/jw-signed-url?{url}',
+        headers=headers
+    ).json()
+
+    print(response)
+    url = response['url']
             elif 'media-cdn.classplusapp.com' in url or 'media-cdn-alisg.classplusapp.com' in url or 'media-cdn-a.classplusapp.com' in url: 
                 headers = {'host': 'api.classplusapp.com', 'x-access-token': f'{cptoken}', 'accept-language': 'EN', 'api-version': '18', 'app-version': '1.4.73.2', 'build-number': '35', 'connection': 'Keep-Alive', 'content-type': 'application/json', 'device-details': 'Xiaomi_Redmi 7_SDK-32', 'device-id': 'c28d3cb16bbdac01', 'region': 'IN', 'user-agent': 'Mobile-Android', 'webengage-luid': '00000187-6fe4-5d41-a530-26186858be4c', 'accept-encoding': 'gzip'}
                 params = {"url": f"{url}"}
